@@ -1,0 +1,451 @@
+{
+  "info": {
+    "name": "API de Tienda en Línea",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Documentación completa de la API para el sistema de Tienda en Línea. Incluye autenticación, gestión de usuarios, productos y pagos.",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"John\",\n    \"apellido\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"username\": \"johndoe\",\n    \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users?page=0&size=10&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by Username",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/johndoe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "johndoe"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"John Updated\",\n    \"apellido\": \"Doe\",\n    \"email\": \"john.updated@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/johndoe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "johndoe"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/johndoe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "johndoe"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/productos?page=0&size=10&sort=nombre,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "nombre,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "productos", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Nuevo Producto\",\n    \"descripcion\": \"Descripción del producto\",\n    \"precio\": 99.99,\n    \"stock\": 100,\n    \"categoria\": "ELECTRONICA"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "productos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Producto Actualizado\",\n    \"descripcion\": \"Descripción actualizada\",\n    \"precio\": 89.99,\n    \"stock\": 90,\n    \"categoria\": "ELECTRONICA"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "productos", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/productos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "productos", "1"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Process Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ordenId\": 1,\n    \"metodoPago\": \"TARJETA_CREDITO\",\n    \"monto\": 199.98,\n    \"detallesTarjeta\": {\n        \"numeroTarjeta\": \"4111111111111111\",\n        \"nombreTitular\": \"John Doe\",\n        \"fechaExpiracion\": \"12/25\",\n        \"cvv\": \"123\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Process Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos/1/reembolso",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos", "1", "reembolso"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "URL base de la API. Por defecto apunta a localhost:8080"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string",
+      "description": "Token JWT obtenido al iniciar sesión. Se actualiza automáticamente con el script de pruebas."
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string",
+      "description": "ID del usuario actual, se actualiza automáticamente"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string",
+      "description": "ID de producto para pruebas"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string",
+      "description": "ID de orden para pruebas"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "// Script que se ejecuta antes de cada petición",
+          "console.log('Ejecutando petición: ' + pm.request.method + ' ' + pm.request.url);"
+        ],
+        "type": "text/javascript"
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "// Script que se ejecuta después de cada respuesta",
+          "if (pm.response.code === 200 || pm.response.code === 201) {",
+          "    // Almacenar el token JWT si está presente en la respuesta de login",
+          "    if (pm.request.url.toString().includes('login') && pm.response.code === 200) {",
+          "        var jsonData = pm.response.json();",
+          "        if (jsonData.token) {",
+          "            pm.environment.set('authToken', jsonData.token);",
+          "            console.log('Token JWT actualizado');",
+          "        }",
+          "    }",
+          "    ",
+          "    // Almacenar IDs para uso en otras peticiones",
+          "    var jsonData = pm.response.json();",
+          "    if (jsonData.id) {",
+          "        if (pm.request.url.toString().includes('productos') && !pm.request.url.toString().includes('buscar')) {",
+          "            pm.environment.set('productId', jsonData.id);",
+          "            console.log('ID de producto almacenado: ' + jsonData.id);",
+          "        } else if (pm.request.url.toString().includes('ordenes')) {",
+          "            pm.environment.set('orderId', jsonData.id);",
+          "            console.log('ID de orden almacenado: ' + jsonData.id);",
+          "        } else if (pm.request.url.toString().includes('usuarios') && !pm.request.url.toString().includes('buscar')) {",
+          "            pm.environment.set('userId', jsonData.id);",
+          "            console.log('ID de usuario almacenado: ' + jsonData.id);",
+          "        }",
+          "    }",
+          "}",
+          "",
+          "// Validaciones básicas de la respuesta",
+          "pm.test('El estado de la respuesta es 2xx', function() {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}

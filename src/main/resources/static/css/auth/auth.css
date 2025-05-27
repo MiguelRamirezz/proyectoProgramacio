@@ -1,0 +1,203 @@
+/* Paleta de colores Gellverse */
+:root {
+    --rich-black: #03071E;
+    --chocolate-cosmos: #370617;
+    --rosewood: #6A040F;
+    --penn-red: #9D0208;
+    --engineering-orange: #D00000;
+    --sinopia: #DC2F02;
+    --persimmon: #E85D04;
+    --princeton-orange: #F48C06;
+    --orange-web: #FAA307;
+    --selective-yellow: #FFBA08;
+    --light: #F8F9FA;
+    --gray: #6C757D;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, rgba(3, 7, 30, 0.9), rgba(58, 12, 23, 0.9));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: var(--rich-black);
+}
+
+/* Contenedor principal */
+.login-container {
+    width: 100%;
+    padding: 2rem 1rem;
+}
+
+/* Tarjeta de login */
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Encabezado de la tarjeta */
+.login-header {
+    background: linear-gradient(135deg, var(--penn-red), var(--orange-web));
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.login-header h2 {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px;
+    margin: 0;
+    font-size: 2rem;
+}
+
+/* Cuerpo del formulario */
+.login-body {
+    padding: 2rem;
+}
+
+/* Campos del formulario */
+.form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--orange-web);
+    box-shadow: 0 0 0 0.25rem rgba(250, 163, 7, 0.25);
+}
+
+/* Etiquetas de los campos */
+.form-label {
+    font-weight: 600;
+    color: var(--rich-black);
+}
+
+/* Botón de login */
+.btn-login {
+    background: linear-gradient(135deg, var(--penn-red), var(--orange-web));
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 8px;
+    color: white;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(233, 93, 4, 0.4);
+    color: white;
+}
+
+/* Checkbox de recordar sesión */
+.form-check-input:checked {
+    background-color: var(--penn-red);
+    border-color: var(--penn-red);
+}
+
+/* Pie de página del login */
+.login-footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Alertas */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+/* Botón para mostrar/ocultar contraseña */
+.toggle-password {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+
+.input-group-text {
+    background-color: white;
+}
+
+/* Enlaces */
+a {
+    color: var(--penn-red);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--engineering-orange);
+    text-decoration: none;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 576px) {
+    .login-card {
+        margin: 0 1rem;
+    }
+
+    .login-body {
+        padding: 1.5rem;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Efecto de carga */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}

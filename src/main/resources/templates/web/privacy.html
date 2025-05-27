@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+<head th:replace="~{fragments/header :: header}">
+    <meta charset="UTF-8">
+    <!-- Header content will be included from the fragment -->
+</head>
+<body class="font-sans antialiased bg-gray-50">
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: navigation}"></div>
+
+    <!-- Main Content -->
+    <main class="py-16 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white shadow-lg overflow-hidden rounded-xl">
+                <div class="px-6 py-8 sm:px-10 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                    <h1 class="text-4xl font-extrabold tracking-tight">Política de Privacidad</h1>
+                    <p class="mt-2 text-blue-100">Última actualización: 27 de mayo de 2025</p>
+                </div>
+                
+                <div class="px-6 py-8 sm:px-10">
+                    <div class="prose prose-blue max-w-none">
+                        <p class="text-gray-600 mb-8 leading-relaxed">
+                            En Gellverse, respetamos tu privacidad y nos comprometemos a proteger tus datos personales. 
+                            Esta política explica cómo recopilamos, usamos y protegemos tu información cuando utilizas nuestro sitio web.
+                        </p>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">1. Responsable del Tratamiento</h2>
+                        <p class="text-gray-600 mb-4">
+                            <strong>Identidad:</strong> Gellverse S.L.<br>
+                            <strong>CIF:</strong> B12345678<br>
+                            <strong>Domicilio:</strong> Calle de la Moda, 123, 28001 Madrid, España<br>
+                            <strong>Email:</strong> privacidad@gellverse.com
+                        </p>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">2. Datos que Recopilamos</h2>
+                        <p class="text-gray-600 mb-4">Podemos recopilar y procesar los siguientes datos:</p>
+                        <ul class="list-disc pl-6 text-gray-600 mb-4 space-y-2">
+                            <li><strong>Datos de identificación:</strong> Nombre, apellidos, DNI/NIF, dirección de correo electrónico, dirección postal, número de teléfono, etc.</li>
+                            <li><strong>Datos de pago:</strong> Información de la tarjeta de crédito/débito (procesada de forma segura a través de pasarelas de pago).</li>
+                            <li><strong>Datos de navegación:</strong> Dirección IP, tipo de navegador, páginas visitadas, tiempo de permanencia, etc.</li>
+                            <li><strong>Datos de perfil:</strong> Preferencias, intereses, historial de compras, etc.</li>
+                        </ul>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">3. Finalidades del Tratamiento</h2>
+                        <p class="text-gray-600 mb-4">Tus datos personales serán utilizados para las siguientes finalidades:</p>
+                        <ul class="list-disc pl-6 text-gray-600 mb-4 space-y-2">
+                            <li>Gestionar tu cuenta de usuario en nuestra plataforma.</li>
+                            <li>Procesar y gestionar tus pedidos, incluyendo el envío y la facturación.</li>
+                            <li>Atender tus consultas y solicitudes de información.</li>
+                            <li>Enviarte comunicaciones comerciales sobre nuestros productos y servicios, si has dado tu consentimiento.</li>
+                            <li>Mejorar nuestros servicios y experiencia de usuario.</li>
+                            <li>Cumplir con nuestras obligaciones legales.</li>
+                        </ul>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">4. Base Legal para el Tratamiento</h2>
+                        <p class="text-gray-600 mb-4">El tratamiento de tus datos se basa en:</p>
+                        <ul class="list-disc pl-6 text-gray-600 mb-4 space-y-2">
+                            <li><strong>Ejecución de un contrato:</strong> Para la gestión de tu cuenta y pedidos.</li>
+                            <li><strong>Consentimiento:</strong> Para el envío de comunicaciones comerciales.</li>
+                            <li><strong>Interés legítimo:</strong> Para mejorar nuestros servicios y seguridad.</li>
+                            <li><strong>Cumplimiento legal:</strong> Para cumplir con nuestras obligaciones legales.</li>
+                        </ul>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">5. Cesión de Datos</h2>
+                        <p class="text-gray-600 mb-4">Tus datos podrán ser comunicados a:</p>
+                        <ul class="list-disc pl-6 text-gray-600 mb-4 space-y-2">
+                            <li>Empresas de transporte para la entrega de pedidos.</li>
+                            <li>Proveedores de servicios de pago para el procesamiento de transacciones.</li>
+                            <li>Autoridades competentes cuando sea requerido por ley.</li>
+                        </ul>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">6. Derechos de los Usuarios</h2>
+                        <p class="text-gray-600 mb-4">Tienes derecho a:</p>
+                        <ul class="list-disc pl-6 text-gray-600 mb-4 space-y-2">
+                            <li><strong>Acceso:</strong> A los datos personales que te conciernen.</li>
+                            <li><strong>Rectificación:</strong> De datos inexactos o incompletos.</li>
+                            <li><strong>Supresión:</strong> De tus datos cuando ya no sean necesarios.</li>
+                            <li><strong>Limitación del tratamiento:</strong> En ciertas circunstancias.</li>
+                            <li><strong>Portabilidad:</strong> De tus datos a otro responsable.</li>
+                            <li><strong>Oposición:</strong> Al tratamiento de tus datos en determinados casos.</li>
+                            <li><strong>Retirar el consentimiento:</strong> En cualquier momento.</li>
+                        </ul>
+                        <p class="text-gray-600 mb-4">
+                            Para ejercer estos derechos, envía una solicitud a <a href="mailto:protecciondedatos@gellverse.com" class="text-blue-600 hover:underline">protecciondedatos@gellverse.com</a> junto con una copia de tu DNI o documento identificativo.
+                        </p>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">7. Seguridad de los Datos</h2>
+                        <p class="text-gray-600 mb-4">
+                            Implementamos medidas técnicas y organizativas para garantizar la seguridad de tus datos personales y protegerlos contra accesos no autorizados, alteración, divulgación o destrucción.
+                        </p>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">8. Conservación de Datos</h2>
+                        <p class="text-gray-600 mb-4">
+                            Conservaremos tus datos personales durante el tiempo necesario para cumplir con las finalidades para las que se recopilaron, incluyendo el cumplimiento de obligaciones legales, contables o de informes.
+                        </p>
+                        
+                        <h2 class="text-2xl font-bold text-gray-800 mt-10 mb-6 pb-2 border-b border-gray-100">9. Cambios en la Política de Privacidad</h2>
+                        <p class="text-gray-600 mb-8 leading-relaxed">
+                            Nos reservamos el derecho de modificar esta política de privacidad en cualquier momento. Cualquier cambio será publicado en esta página con la fecha de actualización correspondiente.
+                        </p>
+                        
+                        <div class="mt-10 pt-6 border-t border-gray-200">
+                            <p class="text-sm text-gray-500">
+                                Si tienes alguna pregunta sobre nuestra Política de Privacidad, por favor contáctanos en <a href="mailto:privacidad@gellverse.com" class="text-blue-600 hover:underline">privacidad@gellverse.com</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

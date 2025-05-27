@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 
+      x-data="{ open: false }"
+      x-init="() => { 
+          // Inicialización de Alpine.js
+          document.addEventListener('alpine:init', () => {
+              Alpine.data('dropdown', () => ({
+                  open: false,
+                  toggle() {
+                      this.open = !this.open
+                  }
+              }));
+          });
+      }"
+      lang="es"
+      class="scroll-smooth"
+      x-cloak>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gellverse - Tu tienda de ropa en línea de confianza">
+    <meta name="author" content="Gellverse Team">
+    <meta name="theme-color" content="#3b82f6">
+
+    <title>Inicio - Gellverse</title>
+
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Estilos iniciales para Alpine.js -->
+    <style>
+        [x-cloak] { display: none !important; }
+        /* Estilos para transiciones */
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        .ease-in-out {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .duration-200 {
+            transition-duration: 200ms;
+        }
+    </style>
+
+    <!-- Preload de fuentes y estilos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 antialiased">
+<!-- Navbar -->
+<nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <!-- Logo -->
+            <a class="text-2xl font-bold flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors" th:href="@{/}">
+                <i class="fas fa-tshirt"></i> Gellverse
+            </a>
+
+            <!-- Menú móvil -->
+            <button id="mobileMenuButton" class="md:hidden text-gray-700 hover:text-blue-600 focus:outline-none" 
+                    aria-label="Menú de navegación" aria-expanded="false" aria-controls="mobileMenu">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+
+            <!-- Menú de escritorio -->
+            <div class="hidden md:flex items-center space-x-1">
+                <a class="px-3 py-2 text-blue-600 font-semibold" th:href="@{/}">Inicio</a>
+                
+                <!-- Menú desplegable de categorías -->
+                <div class="relative group" x-data="{ open: false }">
+                    <button @click="open = !open" @click.away="open = false" 
+                            class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center transition-colors"
+                            :aria-expanded="open"
+                            aria-haspopup="true">
+                        <span>Categorías</span>
+                        <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200" :class="{'transform rotate-180': open}"></i>
+                    </button>
+                    <div x-show="open" x-transition:enter="transition ease-out duration-100" 
+                         x-transition:enter-start="opacity-0 scale-95" 
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75" 
+                         x-transition:leave-start="opacity-100 scale-100" 
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100"
+                         id="categoriasDropdown">
+                        <a th:each="categoria : ${categorias}" 
+                           th:href="@{/productos(categoriaId=${categoria.id})}"
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-tshirt mr-2 text-blue-500"></i>
+                            <span th:text="${categoria.nombre}"></span>
+                        </a>
+                        <div class="border-t my-1"></div>
+                        <a th:href="@{/productos}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 transition-colors">
+                            <i class="fas fa-list-ul mr-2"></i> Ver todas las categorías
+                        </a>
+                    </div>
+                </div>
+                
+                <a class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors" th:href="@{/productos}">Productos</a>
+                <a class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors" href="#ofertas">Ofertas</a>
+                <a class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors" href="#nuevos">Nuevos</a>
+            </div>
+
+            <!-- Carrito y usuario -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#" class="text-gray-700 hover:text-blue-600 relative" aria-label="Carrito de compras">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                
+                <!-- Menú de usuario -->
+                <div sec:authorize="!isAuthenticated()" class="flex gap-2">
+                    <a th:href="@{/auth/login}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white transition-colors">
+                        Iniciar Sesión
+                    </a>
+                    <a th:href="@{/auth/register}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        Registrarse
+                    </a>
+                </div>
+                
+                <div sec:authorize="isAuthenticated()" class="relative group" x-data="{ open: false }">
+                    <button @click="open = !open" @click.away="open = false" 
+                            class="flex items-center space-x-2 focus:outline-none"
+                            :aria-expanded="open"
+                            aria-haspopup="true">
+                        <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold">
+                            <span sec:authentication="principal.username" class="uppercase">U</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform duration-200" :class="{'transform rotate-180': open}"></i>
+                    </button>
+                    
+                    <div x-show="open" x-transition:enter="transition ease-out duration-100" 
+                         x-transition:enter-start="opacity-0 scale-95" 
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75" 
+                         x-transition:leave-start="opacity-100 scale-100" 
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100"
+                         id="userDropdown">
+                        <div class="px-4 py-2 border-b border-gray-100">
+                            <p class="text-sm font-medium text-gray-900 truncate" sec:authentication="principal.username"></p>
+                            <p class="text-xs text-gray-500 truncate" sec:authentication="principal.email"></p>
+                        </div>
+                        <a th:href="@{/perfil}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-user-circle mr-2 text-gray-400"></i> Mi perfil
+                        </a>
+                        <a th:href="@{/pedidos}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-shopping-bag mr-2 text-gray-400"></i> Mis pedidos
+                        </a>
+                        <a th:href="@{/configuracion}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-cog mr-2 text-gray-400"></i> Configuración
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <form th:action="@{/logout}" method="post" class="w-full">
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú móvil -->
+        <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 border-t border-gray-200">
+            <div class="px-2 pt-2 space-y-1">
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">Inicio</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Productos</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Categorías</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Ofertas</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Nuevos</a>
+                
+                <div class="pt-4 border-t border-gray-200">
+                    <div class="flex items-center px-3 py-2">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-shopping-cart text-gray-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <div class="text-base font-medium text-gray-800">Carrito</div>
+                            <div class="text-sm font-medium text-gray-500">0 artículos</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div sec:authorize="!isAuthenticated()" class="pt-4 border-t border-gray-200 space-y-2">
+                    <a th:href="@{/auth/login}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-blue-700 bg-blue-100 hover:bg-blue-200">
+                        Iniciar sesión
+                    </a>
+                    <a th:href="@{/auth/register}" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
+                        Crear cuenta
+                    </a>
+                </div>
+                
+                <div sec:authorize="isAuthenticated()" class="pt-4 border-t border-gray-200">
+                    <div class="flex items-center px-3 py-2">
+                        <div class="flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold">
+                                <span sec:authentication="principal.username" class="uppercase">U</span>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <div class="text-base font-medium text-gray-800" sec:authentication="principal.username"></div>
+                            <div class="text-sm font-medium text-gray-500" sec:authentication="principal.email"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3 space-y-1">
+                        <a th:href="@{/perfil}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+                            Mi perfil
+                        </a>
+                        <a th:href="@{/pedidos}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+                            Mis pedidos
+                        </a>
+                        <a th:href="@{/configuracion}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">
+                            Configuración
+                        </a>
+                        <form th:action="@{/logout}" method="post" class="w-full">
+                            <button type="submit" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50">
+                                Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div sec:authorize="isAuthenticated()" class="relative">
+                <button class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded" id="userDropdown" data-bs-toggle="dropdown">
+                    <i class="fas fa-user"></i> <span sec:authentication="name">Usuario</span>
+                </button>
+                <ul class="absolute right-0 mt-2 bg-white shadow rounded w-48 hidden" id="dropdownMenu">
+                    <li><a class="block px-4 py-2 hover:bg-gray-100" th:href="@{/perfil}">Mi Perfil</a></li>
+                    <li><a class="block px-4 py-2 hover:bg-gray-100" th:href="@{/pedidos}">Mis Pedidos</a></li>
+                    <li><hr></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">Cerrar Sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white pt-32 pb-24 overflow-hidden">
+    <!-- Patrón de fondo -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cGF0aCBkPSJNNTQgNTBINHYtMTBoNTB2MTB6TTU0IDM2SDR2LTEyaDUwVjM2ek01NCAyMkg0VjEwaDUwdjEyeiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="flex flex-col md:flex-row items-center">
+            <!-- Contenido principal -->
+            <div class="md:w-1/2 lg:pr-12 mb-12 md:mb-0 animate-fade-in">
+                <div class="inline-block bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                    <span class="mr-1">🔥</span> Ofertas de temporada
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                    Moda que <span class="text-yellow-300">resalta</span> tu estilo
+                </h1>
+                <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-lg">
+                    Descubre nuestra colección exclusiva de ropa y accesorios. Calidad, estilo y comodidad en un solo lugar.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a th:href="@{/productos}" 
+                       class="bg-white text-blue-700 hover:bg-blue-50 px-6 py-4 rounded-lg font-semibold text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        Comprar ahora
+                    </a>
+                    <a href="#nuevos" 
+                       class="border-2 border-white text-white hover:bg-white hover:bg-opacity-10 px-6 py-4 rounded-lg font-semibold text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        Ver novedades
+                    </a>
+                </div>
+                
+                <!-- Características rápidas -->
+                <div class="mt-10 flex flex-wrap gap-6">
+                    <div class="flex items-center">
+                        <div class="bg-white bg-opacity-20 rounded-full p-2 mr-3">
+                            <i class="fas fa-truck text-blue-200 text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold">Envío gratis</div>
+                            <div class="text-sm text-blue-100">En compras +$50</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="bg-white bg-opacity-20 rounded-full p-2 mr-3">
+                            <i class="fas fa-undo text-blue-200 text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="font-semibold">Devoluciones</div>
+                            <div class="text-sm text-blue-100">30 días garantía</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Imagen del héroe -->
+            <div class="md:w-1/2 relative">
+                <div class="relative z-10">
+                    <img th:src="@{/images/videojuegos/sudadera-videojuego.webp}"
+                         alt="Sudadera de videojuegos"
+                         class="rounded-xl shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500 w-full h-auto object-cover">
+                    
+                    <!-- Etiqueta de oferta -->
+                    <div class="absolute -top-4 -right-4 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full font-bold text-sm transform rotate-6 hover:rotate-0 transition-transform duration-300">
+                        ¡Hasta 50% OFF!
+                    </div>
+                </div>
+                
+                <!-- Elementos decorativos -->
+                <div class="hidden lg:block absolute -left-10 -bottom-10 w-40 h-40 bg-yellow-400 rounded-full opacity-20 -z-10"></div>
+                <div class="hidden lg:block absolute -right-10 top-1/2 w-32 h-32 bg-pink-400 rounded-full opacity-20 -z-10"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ola decorativa -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-current text-white"></path>
+        </svg>
+    </div>
+</header>
+
+<!-- Sección de características -->
+<section id="caracteristicas" class="py-20 bg-gray-50 relative overflow-hidden">
+    <!-- Fondo decorativo -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuXzEiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+PHBhdGggZD0iTTU0IDUwSDRWNDBoNTB2MTBNNTQgMzZINHYtMTBoNTB2MTBNNTQgMjJINFYxMmg1MHYxME0zMCA1MFYxME0yMCA1MFYxME0xMCA1MFYxME0zMCAxMFYwTTIwIDEwVjBNMTAgMTBWMA0KTTQwIDEwVjBNNDAgNTBWNDBNNDAgNDBWMjBNNDAgMjBWMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDA3NGQ5IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPiA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm5fMSkiLz48L3N2Zz4=');"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- Encabezado -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="inline-block bg-blue-100 text-blue-700 text-sm font-semibold px-4 py-1 rounded-full mb-4">
+                Beneficios exclusivos
+            </span>
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                La mejor experiencia de compra en moda
+            </h2>
+            <p class="text-lg text-gray-600">
+                En Gellverse nos esforzamos por ofrecerte no solo productos de calidad, sino también un servicio excepcional que haga que tu experiencia de compra sea inolvidable.
+            </p>
+        </div>
+        
+        <!-- Tarjetas de características -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Envío rápido -->
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                <div class="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-shipping-fast text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-3">Envío Rápido</h3>
+                <p class="text-gray-600 text-center mb-4">Recibe tus pedidos en 24-48 horas hábiles con nuestro servicio express.</p>
+                <div class="text-center">
+                    <span class="inline-block bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Gratis desde $50</span>
+                </div>
+            </div>
+            
+            <!-- Pago seguro -->
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                <div class="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-3">Pago 100% Seguro</h3>
+                <p class="text-gray-600 text-center mb-4">Protegemos tus datos con cifrado SSL de 256 bits. Tu seguridad es nuestra prioridad.</p>
+                <div class="flex justify-center space-x-2">
+                    <i class="fab fa-cc-visa text-2xl text-gray-400"></i>
+                    <i class="fab fa-cc-mastercard text-2xl text-gray-400"></i>
+                    <i class="fab fa-cc-paypal text-2xl text-gray-400"></i>
+                </div>
+            </div>
+            
+            <!-- Soporte -->
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                <div class="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-headset text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-3">Soporte 24/7</h3>
+                <p class="text-gray-600 text-center mb-4">Asistencia personalizada por chat, teléfono o correo cuando lo necesites.</p>
+                <div class="text-center">
+                    <a href="#contacto" class="text-blue-600 hover:text-blue-800 text-sm font-medium inline-flex items-center">
+                        Contáctanos <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Devoluciones -->
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                <div class="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-undo-alt text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-center mb-3">Devoluciones Fáciles</h3>
+                <p class="text-gray-600 text-center mb-4">¿No te gustó? Te devolvemos tu dinero en 30 días sin hacer preguntas.</p>
+                <div class="text-center">
+                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">30 días de garantía</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Llamado a la acción -->
+        <div class="mt-16 text-center">
+            <div class="inline-flex flex-col sm:flex-row items-center gap-4 bg-white p-6 rounded-xl shadow-md">
+                <div class="text-left">
+                    <h4 class="font-bold text-lg text-gray-900">¿Listo para una nueva experiencia de compra?</h4>
+                    <p class="text-gray-600">Únete a miles de clientes satisfechos</p>
+                </div>
+                <a th:href="@{/auth/register}" class="whitespace-nowrap px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    Crear cuenta gratis
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ola decorativa inferior -->
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden transform rotate-180">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-current text-white"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4 grid md:grid-cols-4 gap-10">
+        <div>
+            <h5 class="text-xl font-bold mb-4">Gellverse</h5>
+            <p>Tu tienda de ropa en línea de confianza.</p>
+            <div class="flex gap-3 mt-4">
+                <a href="#" class="text-white hover:text-blue-400"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white hover:text-blue-400"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white hover:text-pink-400"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white hover:text-blue-300"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+        <div>
+            <h5 class="text-lg font-semibold mb-4">Navegación</h5>
+            <ul class="space-y-2">
+                <li><a th:href="@{/}" class="hover:underline">Inicio</a></li>
+                <li><a th:href="@{/productos}" class="hover:underline">Ropa</a></li>
+                <li><a href="#nosotros" class="hover:underline">Nosotros</a></li>
+                <li><a href="#contacto" class="hover:underline">Contacto</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="text-lg font-semibold mb-4">Mi Cuenta</h5>
+            <ul class="space-y-2">
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}" class="hover:underline">Iniciar Sesión</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/register}" class="hover:underline">Registrarse</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/perfil}" class="hover:underline">Mi Perfil</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/pedidos}" class="hover:underline">Mis Pedidos</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="text-lg font-semibold mb-4">Contacto</h5>
+            <ul class="space-y-2">
+                <li><i class="fas fa-map-marker-alt me-2"></i> Ciudad, País</li>
+                <li><i class="fas fa-phone me-2"></i> +1 234 567 890</li>
+                <li><i class="fas fa-envelope me-2"></i> info@gellverse.com</li>
+            </ul>
+        </div>
+    </div>
+    <div class="mt-10 border-t border-gray-700 pt-6 text-center text-sm">
+        &copy; <span id="currentYear"></span> Gellverse. Todos los derechos reservados.
+    </div>
+</footer>
+
+<script>
+    // Mostrar año actual
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Dropdown funcional simple
+    document.getElementById('userDropdown')?.addEventListener('click', function () {
+        const menu = document.getElementById('dropdownMenu');
+        if (menu) {
+            menu.classList.toggle('hidden');
+        }
+    });
+</script>
+</body>
+</html>
+

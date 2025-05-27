@@ -1,0 +1,114 @@
+# Archivos de compilación
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Archivos de entorno
+.env
+.env.*
+!.env.example
+
+# Archivos de IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.springBeans
+.sts4-cache
+.apt_generated
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Archivos de carga
+uploads/
+!uploads/.gitkeep
+
+# Archivos de configuración local
+*.properties
+!application.properties
+!application-*.example
+!i18n/messages*.properties
+
+# Archivos de perfil de Maven
+.mvn/wrapper/maven-wrapper.properties
+
+# Archivos de NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Archivos de dependencias locales
+lib/
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+
+# Archivos de cobertura de pruebas
+coverage/
+*.coverage
+
+# Archivos de configuración de Docker
+.dockerignore
+Dockerfile
+
+# Archivos de configuración de Kubernetes
+k8s/
+*.yaml
+*.yml
+
+# Archivos de configuración de bases de datos
+*.db
+*.sql
+*.sqlite
+*.h2.db
+
+# Archivos de configuración de IDE
+.idea/
+*.iml
+
+# Archivos de configuración de VS Code
+.vscode/
+
+# Archivos de configuración de Eclipse
+.classpath
+.project
+.settings/
+
+# Archivos de configuración de Maven
+target/
+
+# Archivos de configuración de Gradle
+.gradle/
+build/
+
+# Archivos de configuración de IntelliJ
+*.iws
+*.ipr
+.idea/
+
+# Archivos de configuración de NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/

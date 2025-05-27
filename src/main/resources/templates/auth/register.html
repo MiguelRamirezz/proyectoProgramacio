@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Gellverse</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Estilos personalizados -->
+  <style>
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+      --background-gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-gradient);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .register-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 40px;
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .btn-register {
+      background: var(--background-gradient);
+      color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-register:hover {
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .toggle-password {
+      background: transparent;
+      border: none;
+      color: var(--primary-color);
+    }
+
+    .form-check-link {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .form-check-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="register-container">
+  <div class="register-header">
+    <h2><i class="fas fa-user-plus me-2"></i>Crear Cuenta</h2>
+    <p class="text-muted">Únete a la comunidad Gellverse</p>
+  </div>
+
+  <form th:action="@{/auth/register}" th:object="${usuario}" method="post" id="registerForm" class="needs-validation" novalidate>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <!-- Campo de nombre de usuario -->
+    <div class="mb-3">
+      <label for="username" class="form-label">
+        <i class="fas fa-user-tag me-2"></i>Nombre de usuario
+      </label>
+      <input type="text" class="form-control" id="username" th:field="*{username}"
+             placeholder="Elige un nombre de usuario" required
+             pattern="[a-zA-Z0-9._-]+"
+             title="Solo letras, números, puntos, guiones bajos y guiones"
+             th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''">
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+      <div class="form-text">Puedes usar letras, números, puntos y guiones bajos.</div>
+    </div>
+
+    <!-- Campo de nombre -->
+    <div class="mb-3">
+      <label for="nombre" class="form-label">
+        <i class="fas fa-user me-2"></i>Nombre
+      </label>
+      <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+             placeholder="Tu nombre" required
+             th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid' : ''">
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+    </div>
+
+    <!-- Campo de apellido -->
+    <div class="mb-3">
+      <label for="apellido" class="form-label">
+        <i class="fas fa-user me-2"></i>Apellido
+      </label>
+      <input type="text" class="form-control" id="apellido" th:field="*{apellido}"
+             placeholder="Tu apellido" required
+             th:classappend="${#fields.hasErrors('apellido')} ? 'is-invalid' : ''">
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">
+        <i class="fas fa-envelope me-2"></i>Correo Electrónico
+      </label>
+      <input type="email" class="form-control" id="email" th:field="*{email}"
+             placeholder="tucorreo@ejemplo.com" required
+             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+             title="Por favor ingresa un correo electrónico válido"
+             th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''">
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">
+        <i class="fas fa-lock me-2"></i>Contraseña
+      </label>
+      <div class="input-group">
+        <input type="password" class="form-control" id="password" th:field="*{password}"
+               placeholder="Mínimo 6 caracteres" required minlength="6"
+               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$"
+               title="La contraseña debe tener al menos 6 caracteres, incluyendo mayúsculas, minúsculas, números y al menos un carácter especial (@#$%^&+="
+               th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+               oninput="checkPasswordMatch();">
+        <button class="btn toggle-password" type="button">
+          <i class="far fa-eye"></i>
+        </button>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+      </div>
+      <div class="form-text">La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">
+        <i class="fas fa-lock me-2"></i>Confirmar Contraseña
+      </label>
+      <div class="input-group">
+        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+               placeholder="Repite tu contraseña" required
+               oninput="checkPasswordMatch();">
+        <button class="btn toggle-password" type="button">
+          <i class="far fa-eye"></i>
+        </button>
+        <div id="passwordMatchError" class="invalid-feedback" style="display: none;">Las contraseñas no coinciden</div>
+      </div>
+    </div>
+
+    <!-- Campo de teléfono -->
+    <div class="mb-3">
+      <label for="telefono" class="form-label">
+        <i class="fas fa-phone me-2"></i>Teléfono
+      </label>
+      <input type="tel" class="form-control" id="telefono" th:field="*{telefono}"
+             placeholder="123456789" pattern="[0-9]{9}" 
+             title="El teléfono debe tener exactamente 9 dígitos" required
+             th:classappend="${#fields.hasErrors('telefono')} ? 'is-invalid' : ''">
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+      <div class="form-text">Ingresa tu número de teléfono sin espacios ni guiones.</div>
+    </div>
+
+    <!-- Términos y condiciones -->
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="terminos" name="terminosAceptados" 
+             th:field="${usuario.terminosAceptados}" required>
+      <input type="hidden" name="_terminosAceptados" value="on" />
+      <label class="form-check-label" for="terminos">
+        Acepto los <a href="#" class="form-check-link" data-bs-toggle="modal" data-bs-target="#terminosModal">
+        términos y condiciones
+      </a>
+      </label>
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('terminosAceptados')}" th:errors="*{terminosAceptados}">
+        Debes aceptar los términos y condiciones
+      </div>
+    </div>
+    
+    <!-- Campo de clave de administrador (visible para todos) -->
+    <div class="mb-3">
+      <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" id="esAdminCheck" name="esAdmin" th:field="${usuario.esAdmin}">
+        <input type="hidden" name="_esAdmin" value="on" />
+        <label class="form-check-label" for="esAdminCheck">
+          <i class="fas fa-user-shield me-1"></i>Registrarse como administrador
+        </label>
+      </div>
+      
+      <div id="adminAuthKeyGroup" style="display: none;">
+        <label for="adminAuthKey" class="form-label">
+          <i class="fas fa-key me-2"></i>Clave de autenticación de administrador
+        </label>
+        <input type="password" class="form-control" id="adminAuthKey" name="adminAuthKey"
+               placeholder="Ingresa la clave de administrador"
+               th:classappend="${#fields.hasErrors('adminAuthKey')} ? 'is-invalid' : ''">
+        <div class="invalid-feedback" th:if="${#fields.hasErrors('adminAuthKey')}" th:errors="*{adminAuthKey}">
+          Se requiere una clave de autenticación válida
+        </div>
+        <div class="form-text">Ingresa la clave de registro de administradores</div>
+      </div>
+    </div>
+
+    <div class="d-grid mb-4">
+      <button type="submit" class="btn btn-register">
+        <i class="fas fa-user-plus me-2"></i>Registrarse
+      </button>
+    </div>
+
+    <div class="text-center">
+      <p class="small">¿Ya tienes una cuenta?
+        <a th:href="@{/auth/login}" class="fw-bold">Inicia Sesión</a>
+      </p>
+    </div>
+  </form>
+</div>
+
+<!-- Modal de Términos y Condiciones -->
+<div class="modal fade" id="terminosModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Términos y Condiciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>1. Aceptación de los Términos</h6>
+        <p>Al registrarte en Gellverse, aceptas cumplir con estos términos y condiciones de uso.</p>
+        
+        <h6>2. Uso de la Cuenta</h6>
+        <p>Eres responsable de mantener la confidencialidad de tu cuenta y contraseña.</p>
+        
+        <h6>3. Privacidad</h6>
+        <p>Tus datos personales serán tratados de acuerdo con nuestra política de privacidad.</p>
+        
+        <h6>4. Conducta del Usuario</h6>
+        <p>Te comprometes a no utilizar el servicio para actividades ilegales o no autorizadas.</p>
+        
+        <h6>5. Modificaciones</h6>
+        <p>Nos reservamos el derecho de modificar estos términos en cualquier momento.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para manejar la visibilidad del campo de administrador -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const adminCheck = document.getElementById('esAdminCheck');
+    const adminAuthKeyGroup = document.getElementById('adminAuthKeyGroup');
+    const adminAuthKey = document.getElementById('adminAuthKey');
+    
+    function toggleAdminAuthKey() {
+      if (adminCheck && adminAuthKeyGroup) {
+        if (adminCheck.checked) {
+          adminAuthKeyGroup.style.display = 'block';
+          if (adminAuthKey) adminAuthKey.required = true;
+        } else {
+          adminAuthKeyGroup.style.display = 'none';
+          if (adminAuthKey) {
+            adminAuthKey.required = false;
+            adminAuthKey.value = '';
+          }
+        }
+      }
+    }
+    
+    if (adminCheck) {
+      // Configurar el evento de cambio
+      adminCheck.addEventListener('change', toggleAdminAuthKey);
+      // Inicializar el estado
+      toggleAdminAuthKey();
+      
+      // Verificar si hay un error en el campo de admin para mostrarlo
+      const hasAdminError = document.querySelector('.invalid-feedback[th\:if*="${#fields.hasErrors(\'adminAuthKey\')}"]');
+      if (hasAdminError) {
+        adminCheck.checked = true;
+        toggleAdminAuthKey();
+      }
+    }
+  });
+</script>
+
+<!-- Scripts de Bootstrap y validación -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/auth/register-new.js}"></script>
+</body>
+</html>
